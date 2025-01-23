@@ -56,11 +56,25 @@ serde_json = "1.0.135"
 serde.workspace = true
 toml_edit.workspace = true
 
-[target.'cfg(not(windows))'.dependencies]
-rustix = { version = "0.38.43", default-features = false, features = ["std", "stdio", "termios"] }
+candle-core = { version = "0.3.1" }
+candle-nn = { version = "0.3.1" }
+tokenizers = { version = "0.15.0", features = ["http"] }
+
+tempfile = "3.8"
+safetensors = "0.4"
 
 [dev-dependencies]
+criterion = "0.5"
+proptest = "1.4"
 tempfile = "3.15.0"
+
+[features]
+default = ["cuda"]
+cuda = ["candle-core/cuda", "candle-nn/cuda"]
+metal = ["candle-core/metal", "candle-nn/metal"]
+
+[target.'cfg(not(windows))'.dependencies]
+rustix = { version = "0.38.43", default-features = false, features = ["std", "stdio", "termios"] }
 
 [profile.release]
 panic = "abort"
